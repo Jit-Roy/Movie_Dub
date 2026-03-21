@@ -15,31 +15,38 @@ def _suppress_separator_loggers():
 _suppress_separator_loggers()
     
 from audio_separator.separator import Separator
-from helper import convert_to_wav_bytes
 
-# - Kim_Vocal_2 is one of the best for clean vocal extraction
-# - 'model_bs_roformer_ep_317_sdr_12.9755.ckpt' (state-of-the-art, but larger/slower)
-# - 'UVR_MDXNET_KARA_2.onnx' (good for karaoke-style separation)
-# - 'MDX23C-8KFFT-InstVoc_HQ.ckpt' (high quality, balanced)
 
-def vocal_music_separator(input_audio_path):
+def vocal_music_separator(
+    input_audio_path,
+    vocal_dir="temp/vocal",
+    music_dir="temp/music",
+    model_name="model_bs_roformer_ep_317_sdr_12.9755.ckpt",
+):
     """
-    Separates vocals and music from an input audio file.
-    If the file is not WAV, it converts it first using convert_to_wav_bytes.
+    Separates vocals and music from a WAV input audio file.
 
     Parameters
     ----------
     input_audio_path : str
+    vocal_dir : str
+    music_dir : str
+    model_name : str
+        Separation model to use. Common options:
+        - model_bs_roformer_ep_317_sdr_12.9755.ckpt (state-of-the-art, larger/slower)
+        - UVR_MDXNET_KARA_2.onnx (good for karaoke-style separation)
+        - MDX23C-8KFFT-InstVoc_HQ.ckpt (high quality, balanced)
 
     Returns
     -------
-    dict
-        Paths to separated vocal and music files.
-    """
+    tuple[bytes | None, bytes | None]
+        Tuple of (vocal_bytes, music_bytes).
 
-    # Target directories
-    vocal_dir = "temp/vocal"
-    music_dir = "temp/music"
+    Raises
+    ------
+    ValueError
+        If the input file is not in WAV format.
+    """
 
     os.makedirs(vocal_dir, exist_ok=True)
     os.makedirs(music_dir, exist_ok=True)
@@ -48,17 +55,14 @@ def vocal_music_separator(input_audio_path):
     file_ext = os.path.splitext(input_audio_path)[1].lower()
 
     if file_ext != ".wav":
-        wav_bytes = convert_to_wav_bytes(input_audio_path)
-        tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
-        tmp_file.write(wav_bytes)
-        tmp_file.close()
-        input_wav_path = tmp_file.name
+        raise ValueError("Input file must be in WAV format. Please provide a .wav file.")
 
-    else:
-        input_wav_path = input_audio_path
+    input_wav_path = input_audio_path
 
     vocal_path = None
     music_path = None
+    vocal_bytes = None
+    music_bytes = None
 
     # Use a hidden temporary directory for the separator's output
     with tempfile.TemporaryDirectory() as output_dir:
@@ -71,7 +75,7 @@ def vocal_music_separator(input_audio_path):
                 output_format="WAV"
             )
 
-            separator.load_model("model_bs_roformer_ep_317_sdr_12.9755.ckpt")
+            separator.load_model(model_name)
             output_files = separator.separate(input_wav_path)
         finally:
             logging.disable(previous_disable_level)
@@ -83,15 +87,13 @@ def vocal_music_separator(input_audio_path):
             if "vocal" in filename:
                 vocal_path = os.path.join(vocal_dir, "vocal.wav")
                 shutil.move(source_path, vocal_path)
+                with open(vocal_path, "rb") as f:
+                    vocal_bytes = f.read()
     
             elif "instrumental" in filename or "music" in filename:
                 music_path = os.path.join(music_dir, "music.wav")
                 shutil.move(source_path, music_path)
+                with open(music_path, "rb") as f:
+                    music_bytes = f.read()
 
-    if file_ext != ".wav":
-        os.remove(input_wav_path)
-
-    return {
-        "vocal": vocal_path,
-        "music": music_path
-    }
+    return vocal_bytes, music_bytes

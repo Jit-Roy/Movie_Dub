@@ -82,36 +82,37 @@ def translate_fragment(text_fragment: str, target_language: str = "Chinese") -> 
 # 🧪 TEST CASES
 # -----------------------------
 
-test_fragments = [
-    # Your original ones
-    "You've said in your research that...",
-    "If we look at the data from last quarter,",
-    "The main reason this failed was",
+if __name__ == "__main__":
+    test_fragments = [
+        # Your original ones
+        "You've said in your research that...",
+        "If we look at the data from last quarter,",
+        "The main reason this failed was",
 
-    # 🔥 Edge cases
-    "What we discovered next was...",
-    "This raises an important question:",
-    "And then suddenly-",
-    "The results clearly indicate that",
-    "In contrast to previous studies,",
-    "One possible explanation could be...",
-    "If we consider the implications,",
-    "This might suggest that",
-    "From a theoretical perspective,",
-    "The data doesn't support the claim that...",
-    
-    # 🧠 More natural speech fragments
-    "So what you're basically saying is...",
-    "But the problem here is",
-    "And that's where things get interesting...",
-    "If you think about it,",
-    "The real issue isn't that",
-]
+        # Edge cases
+        "What we discovered next was...",
+        "This raises an important question:",
+        "And then suddenly-",
+        "The results clearly indicate that",
+        "In contrast to previous studies,",
+        "One possible explanation could be...",
+        "If we consider the implications,",
+        "This might suggest that",
+        "From a theoretical perspective,",
+        "The data doesn't support the claim that...",
 
-target_language = "Chinese"
+        # More natural speech fragments
+        "So what you're basically saying is...",
+        "But the problem here is",
+        "And that's where things get interesting...",
+        "If you think about it,",
+        "The real issue isn't that",
+    ]
 
-for i, frag in enumerate(test_fragments, 1):
-    result = translate_fragment(frag, target_language)
-    print(f"{i}. Source: {frag}")
-    print(f"   {target_language}: {result}")
-    print()
+    target_language = "Chinese"
+
+    for i, frag in enumerate(test_fragments, 1):
+        result = translate_fragment(frag, target_language)
+        print(f"{i}. Source: {frag}")
+        print(f"   {target_language}: {result}")
+        print()
