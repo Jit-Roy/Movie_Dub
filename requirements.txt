@@ -1,10 +1,16 @@
 --extra-index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0+cu124
+torchaudio==2.6.0+cu124
+torchvision==0.21.0+cu124
+pytorch-lightning==2.6.1
+torchmetrics>=0.11.4
+transformers==4.57.3
+nemo-toolkit[asr]==2.7.0
 audio-separator==0.41.1
 espnet==202511
 espnet-model-zoo==0.1.7
 librosa==0.11.0
 matplotlib==3.10.8
-nemo-toolkit[asr]==2.7.0
 numpy==2.4.2
 omegaconf==2.3.0
 pyannote.audio==3.3.2
@@ -12,10 +18,4 @@ pydub==0.25.1
 qwen-tts==0.1.1
 soundfile==0.13.1
 speechbrain==1.0.3
-torch==2.5.1+cu124
-torchaudio==2.5.1+cu124
-torchvision==0.20.1+cu124
-pytorch-lightning==2.6.1
-torchmetrics>=0.11.4
-transformers==4.57.3
 wget==3.2
