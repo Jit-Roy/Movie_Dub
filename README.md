@@ -8,16 +8,15 @@ An automated audio dubbing pipeline that translates movie audio from English to 
 
 This pipeline takes an input audio file, separates it into speaker tracks, detects overlapping speech, transcribes the content, translates it to a target language, generates dubbed audio using voice cloning, and finally mixes everything back together.
 
-
 ## Sample Audio Comparison
 
 Listen to the raw English input vs the final automated Chinese output:
 
 **Original Audio (English):**
-[🔊 Listen to English Audio](https://gabalpha.github.io/read-audio/?p=https://raw.githubusercontent.com/Jit-Roy/Movie_Dub/test/Audio_Samples/Podcast.mp3)
+[Podcast.wav](https://github.com/user-attachments/files/26311435/Podcast.wav)
 
 **Dubbed Output (Chinese):**
-[🔊 Listen to Chinese Dub](https://gabalpha.github.io/read-audio/?p=https://raw.githubusercontent.com/Jit-Roy/Movie_Dub/test/Audio_Samples/Podcast_Chinese_Dubbed.mp3)
+[Podcast_Chinese_Dubbed.wav](https://github.com/user-attachments/files/26311791/Podcast_Chinese_Dubbed.wav)
 
 ## Pipeline Architecture
 
