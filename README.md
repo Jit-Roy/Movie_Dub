@@ -1,4 +1,4 @@
-# Movie Dubbing Pipeline
+# Audio Dubbing Pipeline
 
 An automated audio dubbing pipeline that translates movie audio from English to another language (e.g., Chinese) with natural speech synthesis. The system handles complex multi-speaker scenarios with speech overlap detection and intelligent audio mixing.
 
